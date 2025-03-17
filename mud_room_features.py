@@ -18,9 +18,7 @@ import logging
 from constants import APPLICATION_NAME
 from utils import setup_logging
 
-setup_logging()
-module_logger = logging.getLogger(f"{APPLICATION_NAME}.room_features")
-
+module_logger = logging.getLogger(f"{APPLICATION_NAME}")
 
 class RoomFeatures:
     """

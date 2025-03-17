@@ -1,24 +1,14 @@
-# mud_client.py
-
 import asyncio
 import telnetlib3
 import logging
 from config import HOST, PORT, USERNAME, PASSPHRASE  # Import from config.py
-
+from constants import APPLICATION_NAME
 
 class MUDClient:
     def __init__(self, log_level=logging.INFO):
         """Initialize the MUD client with logging level."""
         # Configure logging
-        self.logger = logging.getLogger("MUDClient")
-        self.logger.setLevel(log_level)
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
-
+        self.logger = logging.getLogger(f"{APPLICATION_NAME}.MUDClient")
         self.reader = None
         self.writer = None
 

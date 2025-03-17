@@ -7,13 +7,18 @@ import os
 import random
 from mud_client import MUDClient  # Import the MUDClient class
 from room import Room  # Import the Room class
+from constants import APPLICATION_NAME
+from utils import setup_logging
+
+setup_logging()
+module_logger = logging.getLogger(f"{APPLICATION_NAME}")
 
 # File to store room data
 ROOMS_FILE = "rooms.json"
 # File to store the stack for the next run
 STACK_FILE = "stack.json"
 # Maximum number of rooms to visit
-MAX_ROOMS = 5
+MAX_ROOMS = 2
 
 
 def load_rooms():
@@ -173,7 +178,7 @@ async def main():
         await travel_rooms(client)
 
     except Exception as e:
-        client.logger.error("An error occurred: %s", e)  # Lazy formatting
+        module_logger.error("An error occurred: %s", e)  # Lazy formatting
         raise e
     finally:
         # Close the connection
