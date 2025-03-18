@@ -14,11 +14,15 @@ Example usage:
 """
 
 import re
+import json
 import logging
 from constants import APPLICATION_NAME
 from utils import setup_logging
 
+setup_logging()
+
 module_logger = logging.getLogger(f"{APPLICATION_NAME}")
+
 
 class RoomFeatures:
     """
@@ -127,7 +131,7 @@ class RoomFeatures:
         """
         return self.color_text_dict.get(color_code, [])
 
-    def get_features_with_color_names(self):
+    def to_dict(self):
         """
         Returns the parsed features with human-readable color names.
 
@@ -153,11 +157,17 @@ class RoomFeatures:
         Returns:
             str: A string representation of the parsed features with human-readable color names.
         """
-        return str(self.get_features_with_color_names())
+        features_with_color_names_str = "\n".join(
+            [
+                f"{color_name} : {'\n'.join(text_segments)}"
+                for color_name, text_segments in self.to_dict().items()
+            ]
+        )
+        return features_with_color_names_str
 
 
 if __name__ == "__main__":
-    raw_text = (
+    RAW_TEXT = (
         "\u001b[36mCrown and Lion Tavern\u001b[0m\r\n"
         "This noisy tavern seems a bustle of activity, day or night. There are rooms\n\r"
         "to rent upstairs, but they all seem to be full tonight. A chubby innkeeper\n\r"
@@ -178,9 +188,10 @@ if __name__ == "__main__":
 
     # Print the raw input string to verify special characters
     module_logger.info("Raw Input String:")
-    module_logger.info(repr(raw_text))  # Use repr() to show escape sequences
+    module_logger.info(repr(RAW_TEXT))  # Use repr() to show escape sequences
 
-    rf = RoomFeatures(raw_text)
+    rf = RoomFeatures(RAW_TEXT)
 
     module_logger.info("Parsed Features:")
     module_logger.info(rf)
+    module_logger.info(json.dumps(rf.to_dict(), indent=4))
