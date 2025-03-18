@@ -2,12 +2,12 @@ import logging
 from constants import APPLICATION_NAME
 
 
-def setup_logging():
+def setup_logging(name=APPLICATION_NAME):
     """
     Set up the root logger with file and console handlers.
     """
     # Create a logger
-    logger = logging.getLogger(APPLICATION_NAME)
+    logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)  # Set the base logging level
 
     # Create a file handler
@@ -16,7 +16,7 @@ def setup_logging():
 
     # Create a console handler
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)  # Only log INFO and above to the console
+    console_handler.setLevel(logging.DEBUG)  # Only log INFO and above to the console
 
     # Create a formatter and add it to the handlers
     formatter = logging.Formatter(

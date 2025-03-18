@@ -6,7 +6,7 @@ import logging
 import os
 import random
 from mud_client import MUDClient  # Import the MUDClient class
-from room import Room  # Import the Room class
+from mud_room import Room  # Import the Room class
 from constants import APPLICATION_NAME
 from utils import setup_logging
 
@@ -87,12 +87,7 @@ async def travel_rooms(client):
     # Check if the room is already in the dataset
     if room.id not in room_data:
         # Add the new room to the dataset
-        room_data[room.id] = {
-            "id": room.id,
-            "description": room.description,
-            "raw_look_output": room.raw_look_output,
-            "exits": {},  # Map of direction: room_id
-        }
+        room_data[room.id] = room.to_dict()
         print(f"New room added with ID: {room.id}")
     else:
         print(f"Room already exists with ID: {room.id}")
