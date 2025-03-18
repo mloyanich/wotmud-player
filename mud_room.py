@@ -174,6 +174,29 @@ class Room:
         )
         return f"{description_str}\n\n{exits_str}"
 
+    @staticmethod
+    def from_dict(room_dict):
+        """
+        Create a Room object from a dictionary representation.
+
+        Args:
+            room_dict (dict): A dictionary containing room data.
+
+        Returns:
+            Room: A Room object created from the dictionary.
+        """
+        room = Room(room_dict["raw_look_output"], room_dict["raw_exits_output"])
+        room.id = room_dict["id"]
+        room.features = RoomFeatures.from_dict(room_dict["features"])
+        room.exits = {
+            direction: {
+                "description": data["description"],
+                "room": None if data["room_id"] is None else Room(data["room_id"], ""),
+            }
+            for direction, data in room_dict["exits"].items()
+        }
+        return room
+
 
 if __name__ == "__main__":
     # Example usage

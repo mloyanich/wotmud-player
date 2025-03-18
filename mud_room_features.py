@@ -162,6 +162,21 @@ class RoomFeatures:
         )
         return features_with_color_names_str
 
+    @staticmethod
+    def from_dict(data):
+        """
+        Create a RoomFeatures object from a dictionary.
+
+        Args:
+            data (dict): A dictionary containing parsed features with color names.
+
+        Returns:
+            RoomFeatures: A RoomFeatures object initialized with the provided data.
+        """
+        rf = RoomFeatures("")
+        rf.color_text_dict = {k: v for k, v in data.items() if k in rf.__dict__.keys()}
+        return rf
+
 
 if __name__ == "__main__":
     RAW_TEXT = (
