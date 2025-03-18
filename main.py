@@ -24,28 +24,28 @@ MAX_ROOMS = 2
 def load_rooms():
     """Load the room dataset from the JSON file."""
     if os.path.exists(ROOMS_FILE):
-        with open(ROOMS_FILE, "r") as file:
+        with open(ROOMS_FILE, "r", encoding="utf-8") as file:
             return json.load(file)
     return []
 
 
 def save_rooms(rooms):
     """Save the room dataset to the JSON file."""
-    with open(ROOMS_FILE, "w") as file:
+    with open(ROOMS_FILE, "w", encoding="utf-8") as file:
         json.dump(rooms, file, indent=2)
 
 
 def load_stack():
     """Load the stack from the JSON file."""
     if os.path.exists(STACK_FILE):
-        with open(STACK_FILE, "r") as file:
+        with open(STACK_FILE, "r", encoding="utf-8") as file:
             return json.load(file)
     return []
 
 
 def save_stack(stack):
     """Save the stack to the JSON file."""
-    with open(STACK_FILE, "w") as file:
+    with open(STACK_FILE, "w", encoding="utf-8") as file:
         json.dump(stack, file, indent=2)
 
 

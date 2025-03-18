@@ -172,7 +172,7 @@ if __name__ == "__main__":
         "the patrons. There is one open table stuck in the corner where you might be\n\r"
         "able to sip a quick drink. A small sign hangs from the wall.\n\r"
         "[ obvious exits: W ]\r\n"
-        "\u001b[32m\u001b[33mA stout looking guard is here, walking the streets of Caemlyn.\n\r"
+        "\u001b[32m\u001b[33mA stout looking guard is here, walking the streets of Camelot.\n\r"
         "A ragged looking man asks for spare coins.\n\r"
         "A bartender serves customers with a greedy smile.\n\r"
         "A middle-aged woman offers drinks to patrons.\n\r"

@@ -37,7 +37,7 @@ class TestRoomFeatures(unittest.TestCase):
             "the patrons. There is one open table stuck in the corner where you might be\n\r"
             "able to sip a quick drink. A small sign hangs from the wall.\n\r"
             "[ obvious exits: W ]\r\n"
-            "\u001b[32m\u001b[33mA stout looking guard is here, walking the streets of Caemlyn.\n\r"
+            "\u001b[32m\u001b[33mA stout looking guard is here, walking the streets of Camelot.\n\r"
             "A ragged looking man asks for spare coins.\n\r"
             "A bartender serves customers with a greedy smile.\n\r"
             "A middle-aged woman offers drinks to patrons.\n\r"
@@ -72,7 +72,15 @@ class TestRoomFeatures(unittest.TestCase):
             RoomFeatures.COLOR_DEFAULT
         )
         expected_default_features = [
-            "This noisy tavern seems a bustle of activity, day or night. There are rooms to rent upstairs, but they all seem to be full tonight. A chubby innkeeper and a slew of bar maids scurry about trying to keep up with the orders of the patrons. There is one open table stuck in the corner where you might be able to sip a quick drink. A small sign hangs from the wall. [ obvious exits: W ]",
+            (
+                "This noisy tavern seems a bustle of activity, day or night. "
+                "There are rooms to rent upstairs, "
+                "but they all seem to be full tonight. "
+                "A chubby innkeeper and a slew of bar maids scurry about trying to keep "
+                "up with the orders of the patrons. "
+                "There is one open table stuck in the corner where you might be able to sip "
+                "a quick drink. A small sign hangs from the wall. [ obvious exits: W ]"
+            ),
             "* HP:Healthy SP:Bursting MV:Fresh >",
         ]
         self.assertEqual(default_features, expected_default_features)
@@ -88,7 +96,7 @@ class TestRoomFeatures(unittest.TestCase):
             RoomFeatures.COLOR_YELLOW
         )
         expected_yellow_features = [
-            "A stout looking guard is here, walking the streets of Caemlyn.",
+            "A stout looking guard is here, walking the streets of Camelot.",
             "A ragged looking man asks for spare coins.",
             "A bartender serves customers with a greedy smile.",
             "A middle-aged woman offers drinks to patrons.",
@@ -121,11 +129,18 @@ class TestRoomFeatures(unittest.TestCase):
         expected_features_with_names = {
             "name": ["Crown and Lion Tavern"],
             "description": [
-                "This noisy tavern seems a bustle of activity, day or night. There are rooms to rent upstairs, but they all seem to be full tonight. A chubby innkeeper and a slew of bar maids scurry about trying to keep up with the orders of the patrons. There is one open table stuck in the corner where you might be able to sip a quick drink. A small sign hangs from the wall. [ obvious exits: W ]",
+                (
+                    "This noisy tavern seems a bustle of activity, day or night. "
+                    "There are rooms to rent upstairs, but they all seem to be full tonight. "
+                    "A chubby innkeeper and a slew of bar maids scurry about trying to keep up "
+                    "with the orders of the patrons. There is one open table stuck "
+                    "in the corner where you might be able to sip a quick drink. "
+                    "A small sign hangs from the wall. [ obvious exits: W ]"
+                ),
                 "* HP:Healthy SP:Bursting MV:Fresh >",
             ],
             "mobs": [
-                "A stout looking guard is here, walking the streets of Caemlyn.",
+                "A stout looking guard is here, walking the streets of Camelot.",
                 "A ragged looking man asks for spare coins.",
                 "A bartender serves customers with a greedy smile.",
                 "A middle-aged woman offers drinks to patrons.",

@@ -1,3 +1,5 @@
+"""Unit tests for the mud_room module."""
+
 import unittest
 import hashlib
 import uuid
