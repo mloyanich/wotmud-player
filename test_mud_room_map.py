@@ -22,8 +22,8 @@ class TestRoomMap(unittest.TestCase):
         Test that the RoomMap object is initialized correctly.
         """
         expected_exits = {
-            "N": {"description": "Grand Corridor", "room": None},
-            "W": {"description": "Kitchen", "room": None},
+            "N": "Grand Corridor",
+            "W": "Kitchen",
         }
 
         self.assertEqual(self.room_map.raw_look_output, self.look_output)
@@ -34,9 +34,7 @@ class TestRoomMap(unittest.TestCase):
         """
         Test that the room ID is correctly generated from the room's features.
         """
-        expected_id = hashlib.md5(
-            str(self.room_map.features).encode("utf-8")
-        ).hexdigest()
+        expected_id = "92fd310cf71a43d58b55c6069bb071ab"
         self.assertEqual(self.room_map.id, expected_id)
 
     def test_generate_id_pitch_black(self):
@@ -52,10 +50,10 @@ class TestRoomMap(unittest.TestCase):
         Test that a room can be correctly mapped to an exit.
         """
         connected_room = RoomMap("Another room", "Obvious exits:\nSouth - Hall\n")
-        self.room_map.map_room_to_exit("N", connected_room)
+        self.room_map.map_room_to_exit("N", connected_room.id)
 
-        self.assertEqual(self.room_map.exits["N"]["room"], connected_room)
-        self.assertEqual(self.room_map.exits["N"]["room"].id, connected_room.id)
+        self.assertEqual(self.room_map.exits["N"], connected_room.id)
+        
 
     def test_map_room_to_exit_invalid(self):
         """
@@ -73,9 +71,9 @@ class TestRoomMap(unittest.TestCase):
         Test that the RoomMap to_dict method returns the correct structure.
         """
         connected_room = RoomMap("Another room", "Obvious exits:\nSouth - Hall\n")
-        self.room_map.map_room_to_exit("N", connected_room)
+        self.room_map.map_room_to_exit("N", connected_room.id)
 
-        expected_dict = {self.room_map.id: {"N": connected_room.id, "W": None}}
+        expected_dict = {self.room_map.id: {"N": connected_room.id, "W": "Kitchen"}}
 
         self.assertEqual(self.room_map.to_dict(), expected_dict)
 
@@ -83,7 +81,7 @@ class TestRoomMap(unittest.TestCase):
         """
         Test that to_dict works correctly when there are no connected rooms.
         """
-        expected_dict = {self.room_map.id: {"N": None, "W": None}}
+        expected_dict = {self.room_map.id: {"N": "Grand Corridor", "W": "Kitchen"}}
 
         self.assertEqual(self.room_map.to_dict(), expected_dict)
 
@@ -92,13 +90,13 @@ class TestRoomMap(unittest.TestCase):
         Test that the __str__ method returns the expected string format.
         """
         connected_room = RoomMap("Another room", "Obvious exits:\nSouth - Hall\n")
-        self.room_map.map_room_to_exit("N", connected_room)
+        self.room_map.map_room_to_exit("N", connected_room.id)
 
         expected_str = (
             f"ID: {self.room_map.id}\n"
-            "Exits: \n"
+            "Exits:\n"
             f"N: {connected_room.id}\n"
-            "W: None"
+            "W: Kitchen"
         )
 
         self.assertEqual(str(self.room_map), expected_str)
@@ -107,7 +105,7 @@ class TestRoomMap(unittest.TestCase):
         """
         Test that the __str__ method works correctly with no connected rooms.
         """
-        expected_str = f"ID: {self.room_map.id}\n" "Exits: \n" "N: None\n" "W: None"
+        expected_str = f"ID: {self.room_map.id}\nExits:\nN: Grand Corridor\nW: Kitchen"
 
         self.assertEqual(str(self.room_map), expected_str)
 

@@ -79,7 +79,7 @@ class Room:
         if self.raw_look_output == "It is pitch black...":
             print("It is pitch black...")
             return str(f"black_{uuid.uuid4()}")
-        id_str = self.features.name + " " + self.features.description
+        id_str = f"{self.features.name} {self.features.description}"
         return hashlib.md5((id_str).encode("utf-8")).hexdigest()
 
     def _exits_to_dict(self):
@@ -128,6 +128,13 @@ class Room:
             "raw_exits_output": self.raw_exits_output,
             "exits": self._exits_to_dict(),
         }
+    def _exits_str(self):
+        return "Exits:\n" + "\n".join(
+            [
+                f"{direction}: {data}"
+                for direction, data in self.exits.items()
+            ]
+        )
 
     def __str__(self):
         """
@@ -147,12 +154,7 @@ class Room:
                    W - Kitchen"
         """
         description_str = f"Features:\n{self.features}"
-        exits_str = "Exits:\n" + "\n".join(
-            [
-                f"{direction} - {data}"
-                for direction, data in self.exits.items()
-            ]
-        )
+        exits_str = self._exits_str()
         return f"{description_str}\n\n{exits_str}"
 
     @staticmethod

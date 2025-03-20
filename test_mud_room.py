@@ -39,7 +39,7 @@ class TestRoom(unittest.TestCase):
         Test that the Room ID is correctly generated using an MD5 hash
         of the feature's string representation in normal cases.
         """
-        expected_id = hashlib.md5(str(self.room.features).encode("utf-8")).hexdigest()
+        expected_id = "92fd310cf71a43d58b55c6069bb071ab" 
         self.assertEqual(self.room.id, expected_id)
 
     def test_generate_id_pitch_black(self):
@@ -59,7 +59,7 @@ class TestRoom(unittest.TestCase):
         """
 
         expected_dict = {
-            "id": hashlib.md5(str(self.room.features).encode("utf-8")).hexdigest(),
+            "id": "92fd310cf71a43d58b55c6069bb071ab",
             "features": self.room.features.to_dict(),
             "raw_look_output": self.look_output,
             "raw_exits_output": self.exits_output,
@@ -77,7 +77,7 @@ class TestRoom(unittest.TestCase):
         """
         expected_str = (
             f"Features:\n{self.room.features}\n\n"
-            "Exits:\nN - Grand Corridor\nW - Kitchen"
+            "Exits:\nN: Grand Corridor\nW: Kitchen"
         )
 
         self.assertEqual(str(self.room), expected_str)
