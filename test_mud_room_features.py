@@ -71,18 +71,16 @@ class TestRoomFeatures(unittest.TestCase):
         default_features = self.room_features.get_features_by_color(
             RoomFeatures.COLOR_DEFAULT
         )
-        expected_default_features = [
-            (
+        expected_default_features = [(
                 "This noisy tavern seems a bustle of activity, day or night. "
                 "There are rooms to rent upstairs, "
                 "but they all seem to be full tonight. "
                 "A chubby innkeeper and a slew of bar maids scurry about trying to keep "
                 "up with the orders of the patrons. "
                 "There is one open table stuck in the corner where you might be able to sip "
-                "a quick drink. A small sign hangs from the wall. [ obvious exits: W ]"
-            ),
-            "* HP:Healthy SP:Bursting MV:Fresh >",
-        ]
+                "a quick drink. A small sign hangs from the wall."
+            )]
+           
         self.assertEqual(default_features, expected_default_features)
 
     def test_yellow_features(self):
@@ -127,18 +125,16 @@ class TestRoomFeatures(unittest.TestCase):
         """
         features_with_names = self.room_features.to_dict()
         expected_features_with_names = {
-            "name": ["Crown and Lion Tavern"],
-            "description": [
-                (
+            "name": "Crown and Lion Tavern",
+            "items":[],
+            "description": (
                     "This noisy tavern seems a bustle of activity, day or night. "
                     "There are rooms to rent upstairs, but they all seem to be full tonight. "
                     "A chubby innkeeper and a slew of bar maids scurry about trying to keep up "
                     "with the orders of the patrons. There is one open table stuck "
                     "in the corner where you might be able to sip a quick drink. "
-                    "A small sign hangs from the wall. [ obvious exits: W ]"
+                    "A small sign hangs from the wall."
                 ),
-                "* HP:Healthy SP:Bursting MV:Fresh >",
-            ],
             "mobs": [
                 "A stout looking guard is here, walking the streets of Camelot.",
                 "A ragged looking man asks for spare coins.",
@@ -148,6 +144,7 @@ class TestRoomFeatures(unittest.TestCase):
                 "A merchant guard eyes you warily, intent on keeping order.",
                 "A historian stands here, rattling on about some historical fact or other.",
             ],
+            "raw": self.input_string,
         }
         self.assertEqual(features_with_names, expected_features_with_names)
 

@@ -27,8 +27,8 @@ class TestRoom(unittest.TestCase):
         Test that the Room object is initialized correctly with valid outputs.
         """
         expected_exits = {
-            "N": {"description": "Grand Corridor", "room": None},
-            "W": {"description": "Kitchen", "room": None},
+            "N": "Grand Corridor",
+            "W": "Kitchen",
         }
         self.assertEqual(self.room.raw_look_output, self.look_output)
         self.assertEqual(self.room.raw_exits_output, self.exits_output)
@@ -51,33 +51,12 @@ class TestRoom(unittest.TestCase):
         self.assertTrue(room.id.startswith("black_"))
         self.assertTrue(uuid.UUID(room.id.split("_")[1]))
 
-    def test_map_room_to_exit_valid(self):
-        """
-        Test that a room can be correctly mapped to an existing exit.
-        """
-        connected_room = Room("Another room", "Obvious exits:\nSouth - Hall\n")
-        self.room.map_room_to_exit("N", connected_room)
 
-        self.assertEqual(self.room.exits["N"]["room"], connected_room)
-        self.assertEqual(self.room.exits["N"]["room"].id, connected_room.id)
-
-    def test_map_room_to_exit_invalid(self):
-        """
-        Test that mapping a room to an invalid exit raises a ValueError.
-        """
-        connected_room = Room("Another room", "Obvious exits:\nSouth - Hall\n")
-
-        with self.assertRaises(ValueError) as context:
-            self.room.map_room_to_exit("X", connected_room)
-
-        self.assertEqual(str(context.exception), "Invalid exit direction: X")
 
     def test_to_dict(self):
         """
         Test that the Room object is correctly converted to a dictionary format.
         """
-        connected_room = Room("Another room", "Obvious exits:\nSouth - Hall\n")
-        self.room.map_room_to_exit("N", connected_room)
 
         expected_dict = {
             "id": hashlib.md5(str(self.room.features).encode("utf-8")).hexdigest(),
@@ -85,8 +64,8 @@ class TestRoom(unittest.TestCase):
             "raw_look_output": self.look_output,
             "raw_exits_output": self.exits_output,
             "exits": {
-                "N": {"description": "Grand Corridor", "room_id": connected_room.id},
-                "W": {"description": "Kitchen", "room_id": None},
+                "N": "Grand Corridor",
+                "W": "Kitchen",
             },
         }
 

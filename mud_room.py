@@ -52,14 +52,14 @@ class Room:
             dict: A dictionary mapping exit directions to their descriptions and connected room.
                   Example:
                   {
-                      'N': {'description': 'Grand Corridor', 'room': None},
-                      'W': {'description': 'Kitchen', 'room': None}
+                      'N': 'Grand Corridor',
+                      'W': 'Kitchen',
                   }
         """
         exit_regex = re.compile(r"(North|South|East|West|Up|Down)\s*-\s*([^\n,]+)")
         matches = exit_regex.findall(self.raw_exits_output)
         exits_dict = {
-            direction[0].upper(): {"description": description, "room": None}
+            direction[0].upper(): description
             for direction, description in matches
         }
 
@@ -79,24 +79,8 @@ class Room:
         if self.raw_look_output == "It is pitch black...":
             print("It is pitch black...")
             return str(f"black_{uuid.uuid4()}")
-        return hashlib.md5(str(self.features).encode("utf-8")).hexdigest()
-
-    def map_room_to_exit(self, direction, room):
-        """
-        Map a Room object to a specific exit direction.
-
-        Args:
-            direction (str): The exit direction (e.g., 'N' for North).
-            room (Room): The Room object to map to the exit.
-
-        Raises:
-            ValueError: If the specified direction is not a valid exit.
-        """
-        direction_key = direction[0].upper()
-        if direction_key in self.exits:
-            self.exits[direction_key]["room"] = room
-        else:
-            raise ValueError(f"Invalid exit direction: {direction}")
+        id_str = self.features.name + " " + self.features.description
+        return hashlib.md5((id_str).encode("utf-8")).hexdigest()
 
     def _exits_to_dict(self):
         """
@@ -108,15 +92,12 @@ class Room:
             dict: A dictionary mapping exit directions to their descriptions and room IDs.
                   Example:
                   {
-                      'N': {'description': 'Grand Corridor', 'room_id': '123abc'},
-                      'W': {'description': 'Kitchen', 'room_id': None}
+                      'N': 'Grand Corridor',
+                      'W': 'Kitchen',
                   }
         """
         return {
-            direction: {
-                "description": data["description"],
-                "room_id": data["room"].id if data["room"] else None,
-            }
+            direction: data
             for direction, data in self.exits.items()
         }
 
@@ -124,7 +105,7 @@ class Room:
         """
         Convert the Room object to a dictionary.
 
-        The dictionary includes the room ID, features, raw output data, and exits.
+        The dictionary includes the room ID, features, raw output data, and exits
 
         Returns:
             dict: A dictionary representation of the room.
@@ -135,8 +116,8 @@ class Room:
                       'raw_look_output': 'You are in a room...',
                       'raw_exits_output': 'Exits...',
                       'exits': {
-                          'N': {'description': 'Grand Corridor', 'room_id': '123abc'},
-                          'W': {'description': 'Kitchen', 'room_id': None}
+                          'N': 'Grand Corridor',
+                          'W': 'Kitchen',
                       }
                   }
         """
@@ -168,7 +149,7 @@ class Room:
         description_str = f"Features:\n{self.features}"
         exits_str = "Exits:\n" + "\n".join(
             [
-                f"{direction} - {data['description']}"
+                f"{direction} - {data}"
                 for direction, data in self.exits.items()
             ]
         )
@@ -189,10 +170,7 @@ class Room:
         room.id = room_dict["id"]
         room.features = RoomFeatures.from_dict(room_dict["features"])
         room.exits = {
-            direction: {
-                "description": data["description"],
-                "room": None if data["room_id"] is None else Room(data["room_id"], ""),
-            }
+            direction: data["description"]
             for direction, data in room_dict["exits"].items()
         }
         return room
@@ -205,8 +183,4 @@ if __name__ == "__main__":
     parsed_room = Room(LOOK_OUTPUT, EXITS_OUTPUT)
     print(parsed_room)
     print(json.dumps(parsed_room.to_dict(), indent=4))
-    parsed_room.map_room_to_exit(
-        "N", Room("Another room", "Obvious exits:\nSouth - Tavern\n")
-    )
-    print(parsed_room)
-    print(json.dumps(parsed_room.to_dict(), indent=4))
+    

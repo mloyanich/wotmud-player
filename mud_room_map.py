@@ -1,5 +1,6 @@
 import json
 from mud_room import Room
+from utils import setup_logging
 
 
 class RoomMap(Room):
@@ -32,24 +33,7 @@ class RoomMap(Room):
             self.id: self._exits_to_dict(),
         }
 
-    def _exits_to_dict(self):
-        """
-        Generate a simplified dictionary representation of the room's exits.
-
-        The connected rooms are represented by their IDs or None if not connected.
-
-        Returns:
-            dict: A dictionary mapping exit directions to connected room IDs.
-                  Example:
-                  {
-                      'N': '456def',
-                      'W': None
-                  }
-        """
-        return {
-            direction: data["room"].id if data["room"] else None
-            for direction, data in self.exits.items()
-        }
+    
 
     def __str__(self):
         """
@@ -65,30 +49,48 @@ class RoomMap(Room):
                   N: 456def
                   W: None"
         """
-        exits_str = "\n".join(
-            [
-                f"{direction}: {data['room'].id if data['room'] else None}"
-                for direction, data in self.exits.items()
-            ]
-        )
-        return f"ID: {self.id}\nExits: \n{exits_str}"
+        return f"ID: {self.id}\n{self._exits_str()}"
+
+    def map_room_to_exit(self, direction, room_id):
+        if not direction or direction not in self.exit_map:
+            raise ValueError(f"Invalid exit direction: {direction}")
+        self.exits[direction] = room_id
+    exit_map = {
+            "N" : "S",
+            "S" : "N",
+            "E": "W",
+            "W":"E",
+            "U": "D",
+            "D":"U"
+        }
+    def _opposite_exit(self, direction):
+        
+        return self.exit_map.get(direction.upper(), None)
 
 
+    def map_room_to_opposite_exit(self, direction, room_id):
+        op = self._opposite_exit(direction)
+        self.map_room_to_exit(op, room_id)
 if __name__ == "__main__":
+    logger = setup_logging(__name__)
     # Example usage
     LOOK_OUTPUT = "\u001b[36mCrown and Lion Tavern\u001b[0m\r\n..."
     EXITS_OUTPUT = "Obvious exits:\nNorth - A Dilapidated Shop\nWest - A Dark Alley\n"
 
     # Create a RoomMap object
     parsed_room = RoomMap(LOOK_OUTPUT, EXITS_OUTPUT)
-    print(parsed_room)
-    print(json.dumps(parsed_room.to_dict(), indent=4))
+    logger.info(parsed_room)
+    logger.info(json.dumps(parsed_room.to_dict(), indent=4))
 
     # Connect another room to the north exit
+    new_room = RoomMap("Another room", "Obvious exits:\nSouth - Tavern\n")
     parsed_room.map_room_to_exit(
-        "N", RoomMap("Another room", "Obvious exits:\nSouth - Tavern\n")
+        "N", new_room.id
     )
 
     # Display updated room info
-    print(parsed_room)
-    print(json.dumps(parsed_room.to_dict(), indent=4))
+    logger.info(parsed_room)
+    logger.info(json.dumps(parsed_room.to_dict(), indent=4))
+    logger.info(new_room)
+    new_room.map_room_to_opposite_exit("N", parsed_room.id)
+    logger.info(new_room)

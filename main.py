@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import random
+from dao_room import DAORoom
 from mud_client import MUDClient  # Import the MUDClient class
 from mud_room import Room  # Import the Room class
 from constants import APPLICATION_NAME
@@ -20,13 +21,10 @@ STACK_FILE = "stack.json"
 # Maximum number of rooms to visit
 MAX_ROOMS = 2
 
-
 def load_rooms():
     """Load the room dataset from the JSON file."""
-    if os.path.exists(ROOMS_FILE):
-        with open(ROOMS_FILE, "r", encoding="utf-8") as file:
-            return json.load(file)
-    return []
+    
+    return DAORoom()
 
 
 def save_rooms(rooms):
@@ -66,8 +64,7 @@ async def get_current_room(client):
 async def travel_rooms(client):
     """Travel around the rooms, building a graph of connected rooms."""
     # Load the existing room dataset
-    rooms = load_rooms()
-    room_data = {room["id"]: room for room in rooms}  # Map room IDs to room data
+    room_data = load_rooms()
 
     # Load the stack from the previous run (if it exists)
     path_stack = load_stack()
@@ -85,9 +82,9 @@ async def travel_rooms(client):
         path_stack = []  # Reset the stack
 
     # Check if the room is already in the dataset
-    if room.id not in room_data:
+    if not room_data.get_room_by_id(room.id):
         # Add the new room to the dataset
-        room_data[room.id] = room.to_dict()
+        room_data.add_room(room.to_dict())
         print(f"New room added with ID: {room.id}")
     else:
         print(f"Room already exists with ID: {room.id}")
@@ -99,7 +96,7 @@ async def travel_rooms(client):
     while path_stack and rooms_visited < MAX_ROOMS:
         # Get the current room ID
         current_room_id = path_stack[-1]
-        current_room = room_data[current_room_id]
+        current_room = room_data.get_room_by_id(current_room_id)
 
         # Get the current room's exits
         exits = current_room.get("exits", {})
@@ -122,18 +119,12 @@ async def travel_rooms(client):
             # Check if the new room is already in the dataset
             if new_room.id not in room_data:
                 # Add the new room to the dataset
-                room_data[new_room.id] = {
-                    "id": new_room.id,
-                    "description": new_room.description,
-                    "raw_look_output": new_room.raw_look_output,
-                    "exits": {},  # Map of direction: room_id
-                }
+                room_data.add_room(new_room.to_dict())
                 print(f"New room added with ID: {new_room.id}")
             else:
                 print(f"Room already exists with ID: {new_room.id}")
 
-            # Map the exit to the new room's ID
-            room_data[current_room_id]["exits"][chosen_exit] = new_room.id
+            # Map the exit to the new room's ID TODO
 
             # Push the new room to the path stack
             path_stack.append(new_room.id)
@@ -145,9 +136,7 @@ async def travel_rooms(client):
             print("No untraversed exits left. Backtracking.")
             path_stack.pop()  # Backtrack to the previous room
 
-    # Save the updated room dataset
-    save_rooms(list(room_data.values()))
-    print(f"Room dataset saved to {ROOMS_FILE}")
+    # Save the updated room dataset - don't think i need it anymore'
 
     # Save the stack for the next run
     save_stack(path_stack)

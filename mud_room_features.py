@@ -17,8 +17,7 @@ import re
 import json
 import logging
 from constants import APPLICATION_NAME
-
-module_logger = logging.getLogger(f"{APPLICATION_NAME}")
+from utils import setup_logging
 
 
 class RoomFeatures:
@@ -51,12 +50,18 @@ class RoomFeatures:
         Args:
             input_string (str): The raw input string containing ANSI color codes and text.
         """
-        self.logger = logging.getLogger(
-            f"{APPLICATION_NAME}.room_features.RoomFeatures"
-        )
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug(input_string)
         self.input_string = input_string
         self.color_text_dict = self._parse_input_string()
+        self._assign_features()
 
+    def _assign_features(self):
+        description = self.get_features_by_color(self.COLOR_DEFAULT)
+        self.description = description[0] if description else "Unknown"
+        name = self.get_features_by_color(self.COLOR_CYAN)
+        self.name = name[0] if name else "Unknown"
+    
     def _parse_input_string(self):
         """
         Parses the input string to extract text segments and their associated color codes.
@@ -69,7 +74,7 @@ class RoomFeatures:
             dict: A dictionary mapping color codes to lists of text segments.
         """
         # Regular expression to match ANSI color codes and the text they colorize
-        ansi_regex = re.compile(r"(\u001b\[\d+m)([^\u001b]*)")
+        ansi_regex = re.compile(r"(\u001b\[\d+m)?([^\u001b]*)")
 
         # Find all matches
         matches = ansi_regex.findall(self.input_string)
@@ -77,7 +82,7 @@ class RoomFeatures:
         # Organize the matches into a dictionary
         color_text_dict = {}
         current_color = self.COLOR_DEFAULT  # Start with the default color
-
+        
         for match in matches:
             self.logger.debug("Processing match: %s", match)  # Debug: Print the match
             color_code, text = match
@@ -105,8 +110,12 @@ class RoomFeatures:
 
             # Handle default color logic
             if current_color == self.COLOR_DEFAULT:
-                text = text.replace("\n\r", " ")
-            text_segments = text.strip().replace("\r", "").split("\n")
+                text = text.replace("\n\r", " ").split("[")[0]
+                if text.startswith("\r\n*"):
+                    continue
+                text_segments = [text.strip().replace("\r\n", "")]
+            else:
+                text_segments = text.strip().replace("\r", "").split("\n")
 
             if current_color not in color_text_dict:
                 color_text_dict[current_color] = []
@@ -139,13 +148,13 @@ class RoomFeatures:
         Returns:
             dict: A dictionary mapping human-readable color names to lists of text segments.
         """
-        color_name_map = {
-            self.COLOR_CYAN: "name",
-            self.COLOR_GREEN: "items",
-            self.COLOR_YELLOW: "mobs",
-            self.COLOR_DEFAULT: "description",
+        return {
+            "name" : self.name,
+            "items" : self.get_features_by_color(self.COLOR_GREEN),
+            "mobs" : self.get_features_by_color(self.COLOR_YELLOW),
+            "description" :self.description,
+            "raw": self.input_string
         }
-        return {color_name_map.get(k, k): v for k, v in self.color_text_dict.items()}
 
     def __str__(self):
         """
@@ -154,13 +163,10 @@ class RoomFeatures:
         Returns:
             str: A string representation of the parsed features with human-readable color names.
         """
-        features_with_color_names_str = "\n".join(
-            [
-                f"{color_name} : {'\n'.join(text_segments)}"
-                for color_name, text_segments in self.to_dict().items()
-            ]
+        return (
+            f"Name: {self.name}\n"
+            f"Description: {self.description}"
         )
-        return features_with_color_names_str
 
     @staticmethod
     def from_dict(data):
@@ -175,10 +181,17 @@ class RoomFeatures:
         """
         rf = RoomFeatures("")
         rf.color_text_dict = {k: v for k, v in data.items() if k in rf.__dict__.keys()}
+        rf._assign_features()
         return rf
 
 
 if __name__ == "__main__":
+    module_logger = setup_logging(__name__)
+    new_raw = "You are in a large hall with marble pillars."
+    new_rf = RoomFeatures(new_raw)
+    module_logger.info(new_rf)
+    
+    
     RAW_TEXT = (
         "\u001b[36mCrown and Lion Tavern\u001b[0m\r\n"
         "This noisy tavern seems a bustle of activity, day or night. There are rooms\n\r"
@@ -205,5 +218,9 @@ if __name__ == "__main__":
     rf = RoomFeatures(RAW_TEXT)
 
     module_logger.info("Parsed Features:")
+    module_logger.info(rf.name)
+    module_logger.info(rf.description)
     module_logger.info(rf)
     module_logger.info(json.dumps(rf.to_dict(), indent=4))
+    
+
