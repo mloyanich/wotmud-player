@@ -12,7 +12,7 @@ install:  ## Install project dependencies
 lint:  ## Run linting and formatting
 	$(PYTHON) pre-commit run --all-files
 
-test:  ## Run tests
+test:  install ## Run tests
 	$(PYTHON) pytest $(TEST_DIR)
 
 check: lint test  ## Run all checks (linting, formatting, and tests)
