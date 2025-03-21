@@ -1,1 +1,4 @@
 telnetlib3
+pre-commit
+pytest
+requests

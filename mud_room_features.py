@@ -13,10 +13,10 @@ Example usage:
     print(rf.get_features_with_color_names())
 """
 
-import re
 import json
 import logging
-from constants import APPLICATION_NAME
+import re
+
 from utils import setup_logging
 
 
@@ -61,7 +61,7 @@ class RoomFeatures:
         self.description = description[0] if description else "Unknown"
         name = self.get_features_by_color(self.COLOR_CYAN)
         self.name = name[0] if name else "Unknown"
-    
+
     def _parse_input_string(self):
         """
         Parses the input string to extract text segments and their associated color codes.
@@ -82,7 +82,7 @@ class RoomFeatures:
         # Organize the matches into a dictionary
         color_text_dict = {}
         current_color = self.COLOR_DEFAULT  # Start with the default color
-        
+
         for match in matches:
             self.logger.debug("Processing match: %s", match)  # Debug: Print the match
             color_code, text = match
@@ -149,11 +149,11 @@ class RoomFeatures:
             dict: A dictionary mapping human-readable color names to lists of text segments.
         """
         return {
-            "name" : self.name,
-            "items" : self.get_features_by_color(self.COLOR_GREEN),
-            "mobs" : self.get_features_by_color(self.COLOR_YELLOW),
-            "description" :self.description,
-            "raw": self.input_string
+            "name": self.name,
+            "items": self.get_features_by_color(self.COLOR_GREEN),
+            "mobs": self.get_features_by_color(self.COLOR_YELLOW),
+            "description": self.description,
+            "raw": self.input_string,
         }
 
     def __str__(self):
@@ -163,10 +163,7 @@ class RoomFeatures:
         Returns:
             str: A string representation of the parsed features with human-readable color names.
         """
-        return (
-            f"Name: {self.name}\n"
-            f"Description: {self.description}"
-        )
+        return f"Name: {self.name}\nDescription: {self.description}"
 
     @staticmethod
     def from_dict(data):
@@ -190,8 +187,7 @@ if __name__ == "__main__":
     new_raw = "You are in a large hall with marble pillars."
     new_rf = RoomFeatures(new_raw)
     module_logger.info(new_rf)
-    
-    
+
     RAW_TEXT = (
         "\u001b[36mCrown and Lion Tavern\u001b[0m\r\n"
         "This noisy tavern seems a bustle of activity, day or night. There are rooms\n\r"
@@ -222,5 +218,3 @@ if __name__ == "__main__":
     module_logger.info(rf.description)
     module_logger.info(rf)
     module_logger.info(json.dumps(rf.to_dict(), indent=4))
-    
-

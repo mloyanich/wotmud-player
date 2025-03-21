@@ -1,8 +1,8 @@
 """Unit tests for the mud_room module."""
 
 import unittest
-import hashlib
 import uuid
+
 from mud_room import Room
 
 
@@ -39,7 +39,7 @@ class TestRoom(unittest.TestCase):
         Test that the Room ID is correctly generated using an MD5 hash
         of the feature's string representation in normal cases.
         """
-        expected_id = "92fd310cf71a43d58b55c6069bb071ab" 
+        expected_id = "92fd310cf71a43d58b55c6069bb071ab"
         self.assertEqual(self.room.id, expected_id)
 
     def test_generate_id_pitch_black(self):
@@ -50,8 +50,6 @@ class TestRoom(unittest.TestCase):
         room = Room("It is pitch black...", self.exits_output)
         self.assertTrue(room.id.startswith("black_"))
         self.assertTrue(uuid.UUID(room.id.split("_")[1]))
-
-
 
     def test_to_dict(self):
         """
@@ -76,8 +74,7 @@ class TestRoom(unittest.TestCase):
         Test that the string representation of the Room object is correctly formatted.
         """
         expected_str = (
-            f"Features:\n{self.room.features}\n\n"
-            "Exits:\nN: Grand Corridor\nW: Kitchen"
+            f"Features:\n{self.room.features}\n\nExits:\nN: Grand Corridor\nW: Kitchen"
         )
 
         self.assertEqual(str(self.room), expected_str)

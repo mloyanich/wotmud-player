@@ -1,0 +1,8 @@
+repos:
+  # Ruff: Linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.1 # Use the latest version of ruff
+    hooks:
+      - id: ruff
+        args: [--fix] # Automatically fix linting issues
+      - id: ruff-format # Run ruff's formatter

@@ -4,9 +4,10 @@ along with a bit of code to test it.
 """
 
 import hashlib
+import json
 import re
 import uuid
-import json
+
 from mud_room_features import RoomFeatures
 
 
@@ -59,8 +60,7 @@ class Room:
         exit_regex = re.compile(r"(North|South|East|West|Up|Down)\s*-\s*([^\n,]+)")
         matches = exit_regex.findall(self.raw_exits_output)
         exits_dict = {
-            direction[0].upper(): description
-            for direction, description in matches
+            direction[0].upper(): description for direction, description in matches
         }
 
         return exits_dict
@@ -96,10 +96,7 @@ class Room:
                       'W': 'Kitchen',
                   }
         """
-        return {
-            direction: data
-            for direction, data in self.exits.items()
-        }
+        return {direction: data for direction, data in self.exits.items()}
 
     def to_dict(self):
         """
@@ -128,12 +125,10 @@ class Room:
             "raw_exits_output": self.raw_exits_output,
             "exits": self._exits_to_dict(),
         }
+
     def _exits_str(self):
         return "Exits:\n" + "\n".join(
-            [
-                f"{direction}: {data}"
-                for direction, data in self.exits.items()
-            ]
+            [f"{direction}: {data}" for direction, data in self.exits.items()]
         )
 
     def __str__(self):
@@ -185,4 +180,3 @@ if __name__ == "__main__":
     parsed_room = Room(LOOK_OUTPUT, EXITS_OUTPUT)
     print(parsed_room)
     print(json.dumps(parsed_room.to_dict(), indent=4))
-    

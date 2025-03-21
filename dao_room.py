@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class DAORoom:
     _instance = None  # Singleton instance
 
@@ -71,4 +72,3 @@ if __name__ == "__main__":
     # Get a room by ID
     room = room_dao.get_room_by_id(1)
     print("Room with ID 1:", room)
-

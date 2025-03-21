@@ -1,4 +1,5 @@
 import json
+
 from mud_room import Room
 from utils import setup_logging
 
@@ -33,8 +34,6 @@ class RoomMap(Room):
             self.id: self._exits_to_dict(),
         }
 
-    
-
     def __str__(self):
         """
         Return a formatted string representation of the room and its exits.
@@ -55,22 +54,17 @@ class RoomMap(Room):
         if not direction or direction not in self.exit_map:
             raise ValueError(f"Invalid exit direction: {direction}")
         self.exits[direction] = room_id
-    exit_map = {
-            "N" : "S",
-            "S" : "N",
-            "E": "W",
-            "W":"E",
-            "U": "D",
-            "D":"U"
-        }
-    def _opposite_exit(self, direction):
-        
-        return self.exit_map.get(direction.upper(), None)
 
+    exit_map = {"N": "S", "S": "N", "E": "W", "W": "E", "U": "D", "D": "U"}
+
+    def _opposite_exit(self, direction):
+        return self.exit_map.get(direction.upper(), None)
 
     def map_room_to_opposite_exit(self, direction, room_id):
         op = self._opposite_exit(direction)
         self.map_room_to_exit(op, room_id)
+
+
 if __name__ == "__main__":
     logger = setup_logging(__name__)
     # Example usage
@@ -84,9 +78,7 @@ if __name__ == "__main__":
 
     # Connect another room to the north exit
     new_room = RoomMap("Another room", "Obvious exits:\nSouth - Tavern\n")
-    parsed_room.map_room_to_exit(
-        "N", new_room.id
-    )
+    parsed_room.map_room_to_exit("N", new_room.id)
 
     # Display updated room info
     logger.info(parsed_room)

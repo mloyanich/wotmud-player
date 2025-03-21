@@ -1,6 +1,6 @@
 import unittest
-import hashlib
 import uuid
+
 from mud_room_map import RoomMap
 
 
@@ -53,7 +53,6 @@ class TestRoomMap(unittest.TestCase):
         self.room_map.map_room_to_exit("N", connected_room.id)
 
         self.assertEqual(self.room_map.exits["N"], connected_room.id)
-        
 
     def test_map_room_to_exit_invalid(self):
         """
@@ -93,10 +92,7 @@ class TestRoomMap(unittest.TestCase):
         self.room_map.map_room_to_exit("N", connected_room.id)
 
         expected_str = (
-            f"ID: {self.room_map.id}\n"
-            "Exits:\n"
-            f"N: {connected_room.id}\n"
-            "W: Kitchen"
+            f"ID: {self.room_map.id}\nExits:\nN: {connected_room.id}\nW: Kitchen"
         )
 
         self.assertEqual(str(self.room_map), expected_str)

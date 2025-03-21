@@ -5,10 +5,11 @@ import json
 import logging
 import os
 import random
+
+from constants import APPLICATION_NAME
 from dao_room import DAORoom
 from mud_client import MUDClient  # Import the MUDClient class
 from mud_room import Room  # Import the Room class
-from constants import APPLICATION_NAME
 from utils import setup_logging
 
 setup_logging()
@@ -21,9 +22,10 @@ STACK_FILE = "stack.json"
 # Maximum number of rooms to visit
 MAX_ROOMS = 2
 
+
 def load_rooms():
     """Load the room dataset from the JSON file."""
-    
+
     return DAORoom()
 
 

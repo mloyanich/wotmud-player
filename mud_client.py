@@ -1,8 +1,11 @@
 import asyncio
-import telnetlib3
 import logging
-from config import HOST, PORT, USERNAME, PASSPHRASE  # Import from config.py
+
+import telnetlib3
+
+from config import HOST, PASSPHRASE, PORT, USERNAME  # Import from config.py
 from constants import APPLICATION_NAME
+
 
 class MUDClient:
     def __init__(self, log_level=logging.INFO):
