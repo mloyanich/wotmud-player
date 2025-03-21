@@ -1,7 +1,7 @@
 import unittest
 import uuid
 
-from mud_room_map import RoomMap
+from wotmud_player.mud_room_map import RoomMap
 
 
 class TestRoomMap(unittest.TestCase):

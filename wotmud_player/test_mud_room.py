@@ -3,7 +3,7 @@
 import unittest
 import uuid
 
-from mud_room import Room
+from wotmud_player.mud_room import Room
 
 
 class TestRoom(unittest.TestCase):

@@ -1,8 +1,8 @@
 import json
 import os
 
-from mud_room import Room
-from mud_room_map import RoomMap
+from wotmud_player.mud_room import Room
+from wotmud_player.mud_room_map import RoomMap
 
 
 class MUDMap:

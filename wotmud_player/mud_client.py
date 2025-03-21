@@ -3,12 +3,17 @@ import logging
 
 import telnetlib3
 
-from config import HOST, PASSPHRASE, PORT, USERNAME  # Import from config.py
-from constants import APPLICATION_NAME
+from wotmud_player.config import (
+    HOST,
+    PASSPHRASE,
+    PORT,
+    USERNAME,
+)
+from wotmud_player.constants import APPLICATION_NAME
 
 
 class MUDClient:
-    def __init__(self, log_level=logging.INFO):
+    def __init__(self):
         """Initialize the MUD client with logging level."""
         # Configure logging
         self.logger = logging.getLogger(f"{APPLICATION_NAME}.MUDClient")

@@ -6,11 +6,11 @@ import logging
 import os
 import random
 
-from constants import APPLICATION_NAME
-from dao_room import DAORoom
-from mud_client import MUDClient  # Import the MUDClient class
-from mud_room import Room  # Import the Room class
-from utils import setup_logging
+from wotmud_player.constants import APPLICATION_NAME
+from wotmud_player.dao_room import DAORoom
+from wotmud_player.mud_client import MUDClient  # Import the MUDClient class
+from wotmud_player.mud_room import Room  # Import the Room class
+from wotmud_player.utils import setup_logging
 
 setup_logging()
 module_logger = logging.getLogger(f"{APPLICATION_NAME}")
@@ -119,7 +119,7 @@ async def travel_rooms(client):
             print(new_room)  # Print the room description and exits
 
             # Check if the new room is already in the dataset
-            if new_room.id not in room_data:
+            if not room_data.get_room_by_id(new_room.id):
                 # Add the new room to the dataset
                 room_data.add_room(new_room.to_dict())
                 print(f"New room added with ID: {new_room.id}")

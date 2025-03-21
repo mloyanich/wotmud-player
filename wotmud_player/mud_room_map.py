@@ -1,7 +1,7 @@
 import json
 
-from mud_room import Room
-from utils import setup_logging
+from wotmud_player.mud_room import Room
+from wotmud_player.utils import setup_logging
 
 
 class RoomMap(Room):

@@ -8,7 +8,7 @@ import json
 import re
 import uuid
 
-from mud_room_features import RoomFeatures
+from wotmud_player.mud_room_features import RoomFeatures
 
 
 class Room:

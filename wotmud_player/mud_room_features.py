@@ -17,7 +17,7 @@ import json
 import logging
 import re
 
-from utils import setup_logging
+from wotmud_player.utils import setup_logging
 
 
 class RoomFeatures:
@@ -165,6 +165,12 @@ class RoomFeatures:
         """
         return f"Name: {self.name}\nDescription: {self.description}"
 
+    def update_features_from_dict(self, data):
+        self.color_text_dict = {
+            k: v for k, v in data.items() if k in rf.__dict__.keys()
+        }
+        self._assign_features()
+
     @staticmethod
     def from_dict(data):
         """
@@ -176,10 +182,10 @@ class RoomFeatures:
         Returns:
             RoomFeatures: A RoomFeatures object initialized with the provided data.
         """
-        rf = RoomFeatures("")
-        rf.color_text_dict = {k: v for k, v in data.items() if k in rf.__dict__.keys()}
-        rf._assign_features()
-        return rf
+        room_features = RoomFeatures("")
+        room_features.update_features_from_dict(data)
+
+        return room_features
 
 
 if __name__ == "__main__":
