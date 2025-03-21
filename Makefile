@@ -2,7 +2,7 @@
 
 # Variables
 PYTHON = poetry run
-SOURCE_DIR = wotmud_player  # Replace with your source directory
+SOURCE_DIR = wotmud_player
 TEST_DIR = .  # Replace with your test directory
 
 install:  ## Install project dependencies
@@ -25,7 +25,7 @@ clean:  ## Clean up temporary files
 	find . -type d -name ".pytest_cache" -exec rm -rf {} +
 
 run:  ## Run the application (if applicable)
-	$(PYTHON) python $(SOURCE_DIR)/main.py  # Replace with your entry point
+	$(PYTHON) python -m $(SOURCE_DIR).main  # Replace with your entry point
 
 build:  ## Build the project (if applicable)
 	poetry build

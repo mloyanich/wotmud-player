@@ -13,6 +13,27 @@ class RoomMap(Room):
         Room: The base class representing a room.
     """
 
+    exit_map = {"N": "S", "S": "N", "E": "W", "W": "E", "U": "D", "D": "U"}
+
+    def __init__(self, look_output, exits_output):
+        """
+        Initialize the RoomMap object with the room's look and exits output.
+
+        Args:
+            look_output (str): The room's look output.
+            exits_output (str): The room's exits output.
+        """
+        super().__init__(look_output, exits_output)
+        self._clean_exits_description()
+
+    def _clean_exits_description(self):
+        """
+        Clean up the exits description by removing description for each direction.
+        We need it for marking unvisited rooms.
+        """
+        for direction in self.exits:
+            self.exits[direction] = None
+
     def to_dict(self):
         """
         Convert the RoomMap object to a dictionary format.
@@ -54,8 +75,6 @@ class RoomMap(Room):
         if not direction or direction not in self.exit_map:
             raise ValueError(f"Invalid exit direction: {direction}")
         self.exits[direction] = room_id
-
-    exit_map = {"N": "S", "S": "N", "E": "W", "W": "E", "U": "D", "D": "U"}
 
     def _opposite_exit(self, direction):
         return self.exit_map.get(direction.upper(), None)

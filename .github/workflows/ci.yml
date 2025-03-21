@@ -33,8 +33,8 @@ jobs:
 
       # Run linting and formatting
       - name: Run linting and formatting
-        run: poetry run make lint
+        run: make lint
 
       # Run tests
       - name: Run tests
-        run: poetry run make test
+        run: make test

@@ -36,7 +36,8 @@ class DAORoom:
         """Add a new room to the data and save it to the JSON file."""
         room_id = str(room["id"])  # Use the room ID as the key
         if room_id in self._rooms:
-            raise ValueError(f"Room with ID {room_id} already exists.")
+            print(f"Room with ID {room_id} already exists.")
+            return
         self._rooms[room_id] = room
         self._save_data()
 

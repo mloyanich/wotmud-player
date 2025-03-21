@@ -59,9 +59,7 @@ class Room:
         """
         exit_regex = re.compile(r"(North|South|East|West|Up|Down)\s*-\s*([^\n,]+)")
         matches = exit_regex.findall(self.raw_exits_output)
-        exits_dict = {
-            direction[0].upper(): description for direction, description in matches
-        }
+        exits_dict = {direction[0].upper(): None for direction, description in matches}
 
         return exits_dict
 
@@ -76,11 +74,17 @@ class Room:
         Returns:
             str: A unique identifier for the room.
         """
-        if self.raw_look_output == "It is pitch black...":
+        if "It is pitch black..." in self.raw_look_output:
             print("It is pitch black...")
             return str(f"black_{uuid.uuid4()}")
         id_str = f"{self.features.name} {self.features.description}"
         return hashlib.md5((id_str).encode("utf-8")).hexdigest()
+
+    def _exits_from_dict(self, exits_dict):
+        """
+        Set the exits of the room from a dictionary format.
+        """
+        self.exits = {direction: data for direction, data in exits_dict.items()}
 
     def _exits_to_dict(self):
         """

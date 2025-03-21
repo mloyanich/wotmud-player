@@ -25,14 +25,7 @@ MAX_ROOMS = 2
 
 def load_rooms():
     """Load the room dataset from the JSON file."""
-
     return DAORoom()
-
-
-def save_rooms(rooms):
-    """Save the room dataset to the JSON file."""
-    with open(ROOMS_FILE, "w", encoding="utf-8") as file:
-        json.dump(rooms, file, indent=2)
 
 
 def load_stack():
@@ -102,7 +95,9 @@ async def travel_rooms(client):
 
         # Get the current room's exits
         exits = current_room.get("exits", {})
-        untraversed_exits = [exit for exit in room.exits if exit not in exits]
+        print(f"Current room exits: {exits}")
+        untraversed_exits = [exit for exit in room.exits if exit]
+        print(f"Untraversed exits: {untraversed_exits}")
 
         if untraversed_exits:
             # Choose a random untraversed exit
@@ -150,7 +145,7 @@ async def travel_rooms(client):
 
 async def main():
     # Create the MUD client with debug logging
-    client = MUDClient(log_level=logging.INFO)
+    client = MUDClient()
 
     try:
         # Connect to the server

@@ -163,7 +163,7 @@ class RoomFeatures:
         Returns:
             str: A string representation of the parsed features with human-readable color names.
         """
-        return f"Name: {self.name}\nDescription: {self.description}"
+        return f"Name: {self.name}\n Description: {self.description}"
 
     def update_features_from_dict(self, data):
         self.color_text_dict = {
