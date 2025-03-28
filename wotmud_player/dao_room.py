@@ -1,6 +1,8 @@
 import json
 import os
 
+from pathlib import Path
+
 
 class DAORoom:
     _instance = None  # Singleton instance
@@ -13,7 +15,9 @@ class DAORoom:
 
     def _initialize(self):
         """Load the JSON file when the singleton is first created."""
-        self._data_file = "rooms.json"  # Path to the JSON file
+        # Get the rooms.json file path
+        parent_dir = Path(__file__).parent.parent
+        self._data_file = parent_dir / "rooms.json"
         self._rooms = self._load_data()
 
     def _load_data(self):
@@ -22,7 +26,12 @@ class DAORoom:
             raise FileNotFoundError(f"The file {self._data_file} does not exist.")
 
         with open(self._data_file, "r") as file:
-            return json.load(file)
+            all_rooms = json.load(file)
+        return {
+            r_id: r_data
+            for r_id, r_data in all_rooms.items()
+            if not r_id.startswith("black_")
+        }
 
     def get_all_rooms(self):
         """Return all rooms as a dictionary."""
@@ -61,6 +70,9 @@ class DAORoom:
         """Save the updated room data back to the JSON file."""
         with open(self._data_file, "w") as file:
             json.dump(self._rooms, file, indent=4)
+
+    def to_dict(self):
+        return self._rooms
 
 
 # Example usage

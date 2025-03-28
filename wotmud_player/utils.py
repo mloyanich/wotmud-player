@@ -1,7 +1,7 @@
 import logging
 
 
-from wotmud_player.constants import APPLICATION_NAME
+from constants import APPLICATION_NAME
 
 
 def setup_logging(name=APPLICATION_NAME):

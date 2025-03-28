@@ -17,7 +17,7 @@ import json
 import logging
 import re
 
-from wotmud_player.utils import setup_logging
+from utils import setup_logging
 
 
 class RoomFeatures:

@@ -6,17 +6,15 @@ import logging
 import os
 import random
 
-from wotmud_player.constants import APPLICATION_NAME
-from wotmud_player.dao_room import DAORoom
-from wotmud_player.mud_client import MUDClient  # Import the MUDClient class
-from wotmud_player.mud_room import Room  # Import the Room class
-from wotmud_player.utils import setup_logging
+from constants import APPLICATION_NAME
+from dao_room import DAORoom
+from mud_client import MUDClient  # Import the MUDClient class
+from mud_room import Room  # Import the Room class
+from utils import setup_logging
 
 setup_logging()
 module_logger = logging.getLogger(f"{APPLICATION_NAME}")
 
-# File to store room data
-ROOMS_FILE = "rooms.json"
 # File to store the stack for the next run
 STACK_FILE = "stack.json"
 # Maximum number of rooms to visit

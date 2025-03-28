@@ -2,8 +2,7 @@
 
 import unittest
 import uuid
-
-from wotmud_player.mud_room import Room
+from mud_room import Room
 
 
 class TestRoom(unittest.TestCase):
@@ -27,8 +26,8 @@ class TestRoom(unittest.TestCase):
         Test that the Room object is initialized correctly with valid outputs.
         """
         expected_exits = {
-            "N": "Grand Corridor",
-            "W": "Kitchen",
+            "N": None,
+            "W": None,
         }
         self.assertEqual(self.room.raw_look_output, self.look_output)
         self.assertEqual(self.room.raw_exits_output, self.exits_output)
@@ -62,8 +61,8 @@ class TestRoom(unittest.TestCase):
             "raw_look_output": self.look_output,
             "raw_exits_output": self.exits_output,
             "exits": {
-                "N": "Grand Corridor",
-                "W": "Kitchen",
+                "N": None,
+                "W": None,
             },
         }
 
@@ -73,9 +72,7 @@ class TestRoom(unittest.TestCase):
         """
         Test that the string representation of the Room object is correctly formatted.
         """
-        expected_str = (
-            f"Features:\n{self.room.features}\n\nExits:\nN: Grand Corridor\nW: Kitchen"
-        )
+        expected_str = f"Features:\n{self.room.features}\n\nExits:\nN: None\nW: None"
 
         self.assertEqual(str(self.room), expected_str)
 

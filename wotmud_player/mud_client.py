@@ -3,13 +3,13 @@ import logging
 
 import telnetlib3
 
-from wotmud_player.config import (
+from config import (
     HOST,
     PASSPHRASE,
     PORT,
     USERNAME,
 )
-from wotmud_player.constants import APPLICATION_NAME
+from constants import APPLICATION_NAME
 
 
 class MUDClient:

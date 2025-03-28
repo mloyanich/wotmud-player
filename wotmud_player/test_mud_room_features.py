@@ -11,7 +11,7 @@ Example usage:
 
 import unittest
 
-from wotmud_player.mud_room_features import RoomFeatures
+from mud_room_features import RoomFeatures
 
 
 class TestRoomFeatures(unittest.TestCase):

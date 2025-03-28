@@ -1,8 +1,7 @@
 import json
 import os
 
-from wotmud_player.mud_room import Room
-from wotmud_player.mud_room_map import RoomMap
+from mud_room import Room
 
 
 class MUDMap:
@@ -18,7 +17,7 @@ class MUDMap:
             with open(self.map_file, "r", encoding="utf-8") as file:
                 rooms_data = json.load(file)
                 return {
-                    room["id"]: RoomMap.from_dict(room)
+                    room["id"]: Room.from_dict(room)
                     for room in rooms_data
                     if not room["id"].startswith("black_")
                 }
